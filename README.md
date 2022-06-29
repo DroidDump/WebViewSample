@@ -5,3 +5,5 @@ In the project-level 'local.properties' file, need to add the parameter:
 
 For example:  
 `BASIC_URL=http://example.com/`
+
+After that rebuild the project.
