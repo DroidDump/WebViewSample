@@ -1,6 +1,8 @@
 package com.example.webviewsample
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.KeyEvent
 import android.webkit.WebResourceRequest
@@ -28,7 +30,13 @@ class MainActivity : AppCompatActivity() {
                 view: WebView,
                 request: WebResourceRequest
             ): Boolean {
-                view.loadUrl(request.url.toString())
+                if (Uri.parse(request.url.toString()).host
+                    == Uri.parse(getString(R.string.BASIC_URL)).host) {
+                    return false
+                }
+                Intent(Intent.ACTION_VIEW, Uri.parse(request.url.toString())).apply {
+                    startActivity(this)
+                }
                 return true
             }
         }
