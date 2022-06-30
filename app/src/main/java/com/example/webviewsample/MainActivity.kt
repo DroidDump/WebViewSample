@@ -21,25 +21,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.webView.webViewClient = MyWebViewClient()
+
         val webSettings = binding.webView.settings
         @SuppressLint("SetJavaScriptEnabled")
         webSettings.javaScriptEnabled = true
-
-        binding.webView.webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(
-                view: WebView,
-                request: WebResourceRequest
-            ): Boolean {
-                if (Uri.parse(request.url.toString()).host
-                    == Uri.parse(getString(R.string.BASIC_URL)).host) {
-                    return false
-                }
-                Intent(Intent.ACTION_VIEW, Uri.parse(request.url.toString())).apply {
-                    startActivity(this)
-                }
-                return true
-            }
-        }
 
         if (savedInstanceState == null) {
             binding.webView.loadUrl(getString(R.string.BASIC_URL))
@@ -63,4 +49,23 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onKeyDown(keyCode, event)
     }
+
+    private inner class MyWebViewClient : WebViewClient() {
+
+        override fun shouldOverrideUrlLoading(
+            view: WebView?,
+            request: WebResourceRequest?
+        ): Boolean {
+            if (Uri.parse(request?.url.toString()).host
+                == Uri.parse(getString(R.string.BASIC_URL)).host
+            ) {
+                return false
+            }
+            Intent(Intent.ACTION_VIEW, Uri.parse(request?.url.toString())).apply {
+                startActivity(this)
+            }
+            return true
+        }
+    }
+
 }
