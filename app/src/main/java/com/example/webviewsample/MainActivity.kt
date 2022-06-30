@@ -19,11 +19,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-    }
-
-    override fun onStart() {
-        super.onStart()
-
         val webSettings = binding.webView.settings
         @SuppressLint("SetJavaScriptEnabled")
         webSettings.javaScriptEnabled = true
@@ -38,7 +33,19 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        binding.webView.loadUrl(getString(R.string.BASIC_URL))
+        if (savedInstanceState == null) {
+            binding.webView.loadUrl(getString(R.string.BASIC_URL))
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        binding.webView.saveState(outState)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        binding.webView.restoreState(savedInstanceState)
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
